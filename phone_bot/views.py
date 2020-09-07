@@ -7,6 +7,7 @@ import logging
 import phonenumbers
 from django.core.mail import send_mail
 
+from .models import Lead
 
 bot = TeleBot(settings.TOKEN_PHONE)
 print(bot.get_me())
@@ -46,7 +47,9 @@ def test_contact(message):
 def contact_handler(message):
     phone = phonenumbers.parse(message.contact.phone_number)
     country = phonenumbers.region_code_for_number(phone)
-    send_mail('academy54.com', 'Новый лид на академи54 \n' +
-              EMAIL_MESSAGE.format(message.from_user.first_name, message.from_user.last_name, phone, country),
-              'boltward@gmail.com', ['mailhandler@ltdstock.net'], fail_silently=False)
+    new_lead = Lead(name=message.from_user.first_name, phone=phone, country=country)
+    new_lead.save()
+    # send_mail('academy54.com', 'Новый лид на академи54 \n' +
+    #          EMAIL_MESSAGE.format(message.from_user.first_name, message.from_user.last_name, phone, country),
+    #          'boltward@gmail.com', ['mailhandler@ltdstock.net'], fail_silently=False)
     bot.send_message(message.chat.id, 'Заявка принята. \n Ожидайте звонка специалиста! \n {} {}'.format(phone, country))
