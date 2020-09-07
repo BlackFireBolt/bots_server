@@ -45,7 +45,7 @@ def test_contact(message):
 
 @bot.message_handler(content_types=['contact'])
 def contact_handler(message):
-    country = phonenumbers.region_code_for_number(message.contact.phone_number)
+    country = phonenumbers.region_code_for_number(phonenumbers.parse(message.contact.phone_number))
     new_lead = Lead(name=message.from_user.first_name, phone=message.contact.phone_number, country=country)
     new_lead.save()
     # send_mail('academy54.com', 'Новый лид на академи54 \n' +
