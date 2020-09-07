@@ -45,11 +45,10 @@ def test_contact(message):
 
 @bot.message_handler(content_types=['contact'])
 def contact_handler(message):
-    phone = phonenumbers.parse(message.contact.phone_number)
-    country = phonenumbers.region_code_for_number(phone)
-    new_lead = Lead(name=message.from_user.first_name, phone=phone, country=country)
+    country = phonenumbers.region_code_for_number(message.contact.phone_number)
+    new_lead = Lead(name=message.from_user.first_name, phone=message.contact.phone_number, country=country)
     new_lead.save()
     # send_mail('academy54.com', 'Новый лид на академи54 \n' +
     #          EMAIL_MESSAGE.format(message.from_user.first_name, message.from_user.last_name, phone, country),
     #          'boltward@gmail.com', ['mailhandler@ltdstock.net'], fail_silently=False)
-    bot.send_message(message.chat.id, 'Заявка принята. \n Ожидайте звонка специалиста! \n {} {}'.format(phone, country))
+    bot.send_message(message.chat.id, 'Заявка принята. \n Ожидайте звонка специалиста!')
