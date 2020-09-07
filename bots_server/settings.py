@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -130,10 +131,15 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 
-TOKEN_PHONE = '1282836498:AAGKDMN63_hHeev8l3EMT_xryCXBujGJQLk'
-TOKEN_PAYMENT = '1284620848:AAGGvVVtZyHU7kklthMfr34eAHBdzGYYkSk'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
+TOKEN_PHONE = '1323374023:AAEmcXvX5Azz-NnySfMRvD4TcteRpPNIOb4'
+TOKEN_PAYMENT = '1118552786:AAF6z2TQV_2qteFWdnIaVB4AoIfLB_0xQp8'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'

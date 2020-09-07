@@ -38,7 +38,12 @@ def test_contact(message):
     reg_button = types.KeyboardButton(text='Оставить заявку', request_contact=True)
     keyboard.add(reg_button)
     response = bot.send_message(message.chat.id,
-                                "You should share your phone number",
+                                "Здравствуйте, {}! \n"
+                                " \n "
+                                "Для получения помощи специалиста требуется отправить нам номер телефона."
+                                "Для этого нажмите на кнопку 'Оставить заявку', расположенную ниже 👇. \n"
+                                "\n"
+                                "Для повторной отправки напишите /start.".format(message.from_user.username),
                                 reply_markup=keyboard)
     print(response.contact)
 
