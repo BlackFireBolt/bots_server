@@ -30,7 +30,7 @@ export_to_csv.short_description = 'Экспорт в CSV'
 
 
 class LeadAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'phone', 'country', 'created_date')
+    list_display = ('name', 'phone', 'country', 'created_date')
     actions = [export_to_csv]
 
 
