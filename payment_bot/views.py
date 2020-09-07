@@ -22,7 +22,7 @@ class TelegramBot(View):
     @staticmethod
     def get(request, *args, **kwargs):
         bot.remove_webhook()
-        bot.set_webhook(url='https://ancient-savannah-45581.herokuapp.com/payment_bot/{}'.format(settings.TOKEN_PAYMENT))
+        bot.set_webhook(url='https://bots-server.tk/payment_bot/{}'.format(settings.TOKEN_PAYMENT))
         return HttpResponse('Бот запущен')
 
     @staticmethod

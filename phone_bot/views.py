@@ -19,7 +19,7 @@ class TelegramBot(View):
     @staticmethod
     def get(request, *args, **kwargs):
         bot.remove_webhook()
-        bot.set_webhook(url="https://ancient-savannah-45581.herokuapp.com/phone_bot/{}".format(settings.TOKEN_PHONE))
+        bot.set_webhook(url="https://bots-server.tk/phone_bot/{}".format(settings.TOKEN_PHONE))
         return HttpResponse("Бот запущен")
 
     @staticmethod
