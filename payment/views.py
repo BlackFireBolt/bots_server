@@ -15,6 +15,8 @@ def date_generator(days):
 
 @csrf_exempt
 def payment(request):
+    """ Check responce from payment system """
+    
     allow_ips = {
         '136.243.38.147',
         '136.243.38.149',

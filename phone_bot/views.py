@@ -17,6 +17,8 @@ logger = logging.getLogger(__name__)
 
 
 class TelegramBot(View):
+    """ Class for assist bot """
+
     @staticmethod
     def get(request, *args, **kwargs):
         bot.remove_webhook()
@@ -34,6 +36,8 @@ class TelegramBot(View):
 
 @bot.message_handler(commands=['start'])
 def test_contact(message):
+    """ Start message """
+
     keyboard = types.ReplyKeyboardMarkup(False, True)
     reg_button = types.KeyboardButton(text='Оставить заявку', request_contact=True)
     keyboard.add(reg_button)
@@ -50,6 +54,9 @@ def test_contact(message):
 
 @bot.message_handler(content_types=['contact'])
 def contact_handler(message):
+    """ Handle request from user, save user in database, send email
+        on corporate mail and render message for user """
+
     country = phonenumbers.region_code_for_number(phonenumbers.parse(message.contact.phone_number))
     new_lead = Lead(name=message.from_user.first_name, phone=message.contact.phone_number, country=country)
     new_lead.save()

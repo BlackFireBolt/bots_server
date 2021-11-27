@@ -19,6 +19,7 @@ logger = logging.getLogger(__name__)
 
 
 class TelegramBot(View):
+    """ Class for payment bot """
     @staticmethod
     def get(request, *args, **kwargs):
         bot.remove_webhook()
@@ -35,6 +36,7 @@ class TelegramBot(View):
 
 
 def main_keyboard():
+    """ Support function for main keyboard render """
     keyboard = types.InlineKeyboardMarkup()
 
     key_day = types.InlineKeyboardButton(FIRST_OPTION_BUTTON, callback_data='option_one')
@@ -48,6 +50,8 @@ def main_keyboard():
 
 
 def url_generator(amount, order_id):
+    """ Support function for generate payment url """
+
     separator = ':'
     merchant_id = settings.PAYMENT['public_key']
     secret_key = settings.PAYMENT['secret_key']
@@ -70,6 +74,8 @@ def url_generator(amount, order_id):
 
 
 def payment_keyboard(amount, order_id):
+    """ Support function for payment keyboard render """
+
     keyboard_payment = types.InlineKeyboardMarkup()
 
     key_pay = types.InlineKeyboardButton('Оплатить подписку', url=url_generator(str(amount), str(order_id)))
@@ -81,11 +87,15 @@ def payment_keyboard(amount, order_id):
 
 @bot.message_handler(commands=['start'])
 def get_text_messages(message):
+    """ Start message """
+
     bot.send_message(message.chat.id, HELLO_MESSAGE.format(message.from_user.username), reply_markup=main_keyboard())
 
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_worker(call):
+    """ Handler for user request and render payment keyboard """
+
     if call.message:
         if call.data == 'option_one':
             payment = Payment(account=call.message.from_user.id, amount=FIRST_OPTION_COST, chat_id=call.message.chat.id,
@@ -125,10 +135,14 @@ def callback_worker(call):
 
 @bot.message_handler(content_types=['text'])
 def alert_message(message):
+    """ Alert message """
+
     bot.send_message(message.chat.id, ALERT_MESSAGE)
 
 
 def success_message(chat_id):
+    """ Render message after success payment """
+
     keyboard_success = types.InlineKeyboardMarkup()
     key = types.InlineKeyboardButton(SUCCESS_BUTTON, url='https://t.me/FSKBtopVIP')
     keyboard_success.add(key)
@@ -136,10 +150,14 @@ def success_message(chat_id):
 
 
 def failure_message(chat_id):
+     """ Render message after failure payment """
+
     bot.send_message(chat_id, FAILURE_MESSAGE)
 
 
 def status_check(message):
+     """ Test function, not used """
+
     client = Payment.objects.get(chat_id=message.chat.id)
     if client.status:
         bot.send_message(message.chat.id, SUCCESS_MESSAGE, reply_markup=main_keyboard())
