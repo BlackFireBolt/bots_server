@@ -23,7 +23,8 @@ class TelegramBot(View):
     @staticmethod
     def get(request, *args, **kwargs):
         bot.remove_webhook()
-        bot.set_webhook(url='https://bots-server.tk/payment_bot/{}'.format(settings.TOKEN_PAYMENT))
+        bot.set_webhook(
+            url='https://bots-server.tk/payment_bot/{}'.format(settings.TOKEN_PAYMENT))
         return HttpResponse('Бот запущен')
 
     @staticmethod
@@ -39,12 +40,16 @@ def main_keyboard():
     """ Support function for main keyboard render """
     keyboard = types.InlineKeyboardMarkup()
 
-    key_day = types.InlineKeyboardButton(FIRST_OPTION_BUTTON, callback_data='option_one')
-    key_week = types.InlineKeyboardButton(SECOND_OPTION_BUTTON, callback_data='option_two')
+    key_day = types.InlineKeyboardButton(
+        FIRST_OPTION_BUTTON, callback_data='option_one')
+    key_week = types.InlineKeyboardButton(
+        SECOND_OPTION_BUTTON, callback_data='option_two')
     keyboard.add(key_day, key_week)
 
-    key_month = types.InlineKeyboardButton(THIRD_OPTION_BUTTON, callback_data='option_three')
-    key_year = types.InlineKeyboardButton(FOURTH_OPTION_BUTTON, callback_data='option_four')
+    key_month = types.InlineKeyboardButton(
+        THIRD_OPTION_BUTTON, callback_data='option_three')
+    key_year = types.InlineKeyboardButton(
+        FOURTH_OPTION_BUTTON, callback_data='option_four')
     keyboard.add(key_month, key_year)
     return keyboard
 
@@ -78,7 +83,8 @@ def payment_keyboard(amount, order_id):
 
     keyboard_payment = types.InlineKeyboardMarkup()
 
-    key_pay = types.InlineKeyboardButton('Оплатить подписку', url=url_generator(str(amount), str(order_id)))
+    key_pay = types.InlineKeyboardButton(
+        'Оплатить подписку', url=url_generator(str(amount), str(order_id)))
     keyboard_payment.add(key_pay)
     key_back = types.InlineKeyboardButton('Назад', callback_data='back')
     keyboard_payment.add(key_back)
@@ -89,7 +95,8 @@ def payment_keyboard(amount, order_id):
 def get_text_messages(message):
     """ Start message """
 
-    bot.send_message(message.chat.id, HELLO_MESSAGE.format(message.from_user.username), reply_markup=main_keyboard())
+    bot.send_message(message.chat.id, HELLO_MESSAGE.format(
+        message.from_user.username), reply_markup=main_keyboard())
 
 
 @bot.callback_query_handler(func=lambda call: True)
@@ -144,19 +151,19 @@ def success_message(chat_id):
     """ Render message after success payment """
 
     keyboard_success = types.InlineKeyboardMarkup()
-    key = types.InlineKeyboardButton(SUCCESS_BUTTON, url='https://t.me/FSKBtopVIP')
+    key = types.InlineKeyboardButton(
+        SUCCESS_BUTTON, url='https://t.me/FSKBtopVIP')
     keyboard_success.add(key)
     bot.send_message(chat_id, SUCCESS_MESSAGE, reply_markup=keyboard_success)
 
 
 def failure_message(chat_id):
-     """ Render message after failure payment """
-
+    """ Render message after failure payment """
     bot.send_message(chat_id, FAILURE_MESSAGE)
 
 
 def status_check(message):
-     """ Test function, not used """
+    """ Test function, not used """
 
     client = Payment.objects.get(chat_id=message.chat.id)
     if client.status:
